@@ -11,6 +11,8 @@
     "ethers": "^5.4.0"
   },
   "devDependencies": {
-    "hardhat": "^2.4.1"
+    "hardhat": "^2.4.1",
+    "prettier": "^2.3.2",
+    "solhint": "^3.3.6"
   }
 }
