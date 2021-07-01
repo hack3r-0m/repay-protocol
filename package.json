@@ -1,0 +1,10 @@
+{
+  "name": "repay-finance",
+  "version": "1.0.0",
+  "main": "hardhat.config.js",
+  "author": "hack3r-0m <oparikh113@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "hardhat": "^2.4.1"
+  }
+}
