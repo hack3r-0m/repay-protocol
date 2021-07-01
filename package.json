@@ -4,7 +4,13 @@
   "main": "hardhat.config.js",
   "author": "hack3r-0m <oparikh113@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile"
+  },
   "dependencies": {
+    "ethers": "^5.4.0"
+  },
+  "devDependencies": {
     "hardhat": "^2.4.1"
   }
 }
