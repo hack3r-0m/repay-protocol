@@ -6,6 +6,7 @@ pragma experimental ABIEncoderV2;
 import "@opengsn/contracts/src/BasePaymaster.sol";
 
 /* solhint-disable no-unused-vars */
+/* solhint-disable max-line-length */
 
 /**
 
@@ -38,9 +39,9 @@ contract WhitelistPaymaster is BasePaymaster {
 
   event Accepted(address indexed onBehlafOf, address indexed to, uint256 gas);
 
-  function versionPaymaster() external view override virtual returns (string memory){
-        return "2.2.2+opengsn.whitelist.ipaymaster";
-    }
+  function versionPaymaster() external view override virtual returns (string memory) {
+    return "2.2.2+opengsn.whitelist.ipaymaster";
+  }
 
   function whitelistSender(address sender) public onlyOwner {
     senderWhitelist[sender] = true;
@@ -76,5 +77,6 @@ contract WhitelistPaymaster is BasePaymaster {
       (address _for, address _to) = abi.decode(context, (address, address));
       emit Accepted(_for, _to, gasUseWithoutPost);
     }
+  }
 
 }

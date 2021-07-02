@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.5||0.7.6||0.6.12||0.5.16;
 
 import "../interfaces/IDelegateOnlyERC725X.sol";
+import "../utils/Context.sol";
 import "../utils/ERC165.sol";
 
 /* solhint-disable private-vars-leading-underscore */
@@ -12,7 +13,7 @@ import "../utils/ERC165.sol";
  * @title Partial implementation of ERC725 X which only allows to delegate call
  */
 
-contract ERC725X is ERC165, IDelegateOnlyERC725X  {
+contract ERC725X is ERC165, Context, IDelegateOnlyERC725X  {
 
     bytes4 internal constant _INTERFACE_ID_DELEGATE_ONLY_ERC725X = type(IDelegateOnlyERC725X).interfaceId;
     address public owner;
@@ -20,6 +21,11 @@ contract ERC725X is ERC165, IDelegateOnlyERC725X  {
     constructor(address _owner) {
         owner = _owner;
         _registerInterface(_INTERFACE_ID_DELEGATE_ONLY_ERC725X);
+    }
+
+    modifier onlyOwner {
+        require(_msgSender() == owner, "ONLY_OWNER");
+        _;
     }
 
     /* Public functions */
@@ -32,7 +38,7 @@ contract ERC725X is ERC165, IDelegateOnlyERC725X  {
      * @param _data the call data.
      */
 
-    function execute(address _to, uint256 _value, bytes calldata _data) external payable override {
+    function execute(address _to, uint256 _value, bytes calldata _data) external payable override onlyOwner {
         emit Executed(_to, _value, _data);
     }
 
