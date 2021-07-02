@@ -14,6 +14,7 @@
     "mark-callable-contracts": "off",
     "check-send-result": "error",
     "compiler-version": ["error", "0.6.12 || 0.5.16 || 0.7.6 || 0.8.4"],
-    "reentrancy": "error"
+    "reentrancy": "error",
+    "func-visibility": ["warn", { "ignoreConstructors": true }]
   }
 }
