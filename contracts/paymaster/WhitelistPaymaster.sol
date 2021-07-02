@@ -5,6 +5,8 @@ pragma experimental ABIEncoderV2;
 
 import "@opengsn/contracts/src/BasePaymaster.sol";
 
+/* solhint-disable no-unused-vars */
+
 /**
 
  * A sample paymaster that has whitelists for senders and targets.

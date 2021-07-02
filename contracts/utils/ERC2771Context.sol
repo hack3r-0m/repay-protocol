@@ -8,6 +8,8 @@ import "./Context.sol";
  * @dev Context variant with ERC2771 support.
  */
 
+/* solhint-disable no-inline-assembly */
+
 abstract contract ERC2771Context is Context {
     address immutable internal _trustedForwarder;
 
@@ -22,7 +24,6 @@ abstract contract ERC2771Context is Context {
     function _msgSender() internal view virtual override returns (address sender) {
         if (isTrustedForwarder(msg.sender)) {
             // The assembly code is more direct than the Solidity version using `abi.decode`.
-            // solhint-disable no-inline-assembly
             assembly {
                 sender := shr(96, calldataload(sub(calldatasize(), 20)))
             }
