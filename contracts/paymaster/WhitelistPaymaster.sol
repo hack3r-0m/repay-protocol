@@ -69,15 +69,12 @@ contract WhitelistPaymaster is BasePaymaster {
     return (abi.encode(relayRequest.request.from, relayRequest.request.to), false);
   }
 
-  function postRelayedCall(
-    bytes calldata context,
-    bool success,
-    uint256 gasUseWithoutPost,
-    GsnTypes.RelayData calldata relayData
-  ) external virtual override {
+  function postRelayedCall(bytes calldata context, bool success, uint256 gasUseWithoutPost, GsnTypes.RelayData calldata relayData) external virtual override {
+    (context, success, gasUseWithoutPost, relayData);
+
     if(success){
-        (address _for, address _to) = abi.decode(context, (address, address));
-        emit Accepted(_for, _to, gasUseWithoutPost);
+      (address _for, address _to) = abi.decode(context, (address, address));
+      emit Accepted(_for, _to, gasUseWithoutPost);
     }
-  }
+
 }

@@ -6,15 +6,16 @@ pragma solidity 0.8.5||0.7.6||0.6.12||0.5.16;
 import "../interfaces/IERC725X.sol";
 
 // modules
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/introspection/ERC165.sol";
+import "../utils/Ownable.sol";
+import "../utils/ERC165.sol";
 
 // libraries
-import "@openzeppelin/contracts/utils/Create2.sol";
+import "../utils/Create2.sol";
 import "../utils/BytesLib.sol";
 
 /* solhint-disable private-vars-leading-underscore */
 /* solhint-disable no-inline-assembly */
+/* solhint-disable max-line-length */
 
 /**
  * @title ERC725 X executor
@@ -39,6 +40,7 @@ contract ERC725X is ERC165, Ownable, IERC725X  {
      * @notice Sets the owner of the contract
      * @param _newOwner the owner of the contract.
      */
+
     constructor(address _newOwner) {
         // This is necessary to prevent a contract that implements both ERC725X and ERC725Y to call both constructors
         if(_newOwner != owner()) {
@@ -60,12 +62,8 @@ contract ERC725X is ERC165, Ownable, IERC725X  {
      * @param _value the value of ETH to transfer
      * @param _data the call data, or the contract data to deploy
      */
-    function execute(uint256 _operation, address _to, uint256 _value, bytes calldata _data)
-    external
-    payable
-    override
-    onlyOwner
-    {
+
+    function execute(uint256 _operation, address _to, uint256 _value, bytes calldata _data) external payable override onlyOwner {
         // emit event
         emit Executed(_operation, _to, _value, _data);
 
@@ -76,12 +74,17 @@ contract ERC725X is ERC165, Ownable, IERC725X  {
             executeCall(_to, _value, _data, txGas);
 
         // DELEGATE CALL
-        // TODO: risky as storage slots can be overridden, remove?
-//        } else if (_operation == OPERATION_DELEGATECALL) {
-//            address currentOwner = owner();
-//            executeDelegateCall(_to, _data, txGas);
-//            // Check that the owner was not overridden
-//            require(owner() == currentOwner, "Delegate call is not allowed to modify the owner!");
+        /* TODO: risky as storage slots can be overridden, remove? */
+
+        /**
+
+        } else if (_operation == OPERATION_DELEGATECALL) {
+            address currentOwner = owner();
+            executeDelegateCall(_to, _data, txGas);
+            // Check that the owner was not overridden
+            require(owner() == currentOwner, "Delegate call is not allowed to modify the owner!");
+
+        */
 
         // CREATE
         } else if (_operation == OPERATION_CREATE) {
@@ -105,11 +108,8 @@ contract ERC725X is ERC165, Ownable, IERC725X  {
 
     // Taken from GnosisSafe
     // https://github.com/gnosis/safe-contracts/blob/development/contracts/base/Executor.sol
-    function executeCall(address to, uint256 value, bytes memory data, uint256 txGas)
-    internal
-    returns (bool success)
-    {
-        // solium-disable-next-line security/no-inline-assembly
+
+    function executeCall(address to, uint256 value, bytes memory data, uint256 txGas) internal returns (bool success) {
         assembly {
             success := call(txGas, to, value, add(data, 0x20), mload(data), 0, 0)
         }
@@ -117,11 +117,8 @@ contract ERC725X is ERC165, Ownable, IERC725X  {
 
     // Taken from GnosisSafe
     // https://github.com/gnosis/safe-contracts/blob/development/contracts/base/Executor.sol
-    function executeDelegateCall(address to, bytes memory data, uint256 txGas)
-    internal
-    returns (bool success)
-    {
-        // solium-disable-next-line security/no-inline-assembly
+
+    function executeDelegateCall(address to, bytes memory data, uint256 txGas) internal returns (bool success) {
         assembly {
             success := delegatecall(txGas, to, add(data, 0x20), mload(data), 0, 0)
         }
@@ -129,11 +126,8 @@ contract ERC725X is ERC165, Ownable, IERC725X  {
 
     // Taken from GnosisSafe
     // https://github.com/gnosis/safe-contracts/blob/development/contracts/libraries/CreateCall.sol
-    function performCreate(uint256 value, bytes memory deploymentData)
-    internal
-    returns (address newContract)
-    {
-        // solium-disable-next-line security/no-inline-assembly
+
+    function performCreate(uint256 value, bytes memory deploymentData) internal returns (address newContract) {
         assembly {
             newContract := create(value, add(deploymentData, 0x20), mload(deploymentData))
         }
