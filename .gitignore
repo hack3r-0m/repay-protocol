@@ -4,6 +4,8 @@ project
 /node_modules
 /.idea
 *.tsbuildinfo
+.vscode
+artifacts
 
 .DS_Store
 

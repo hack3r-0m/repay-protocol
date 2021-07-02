@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "compile": "hardhat compile",
+    "solhint": "solhint 'contracts/**/*.sol'",
     "prettier": "prettier --write ."
   },
   "dependencies": {
