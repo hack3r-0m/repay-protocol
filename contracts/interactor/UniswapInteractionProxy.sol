@@ -8,7 +8,6 @@ import "../interfaces/IERC20.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router01.sol";
 
-/* solhint-disable no-empty-blocks */
 /* solhint-disable max-line-length */
 /* solhint-disable var-name-mixedcase */
 /* solhint-disable func-param-name-mixedcase */
