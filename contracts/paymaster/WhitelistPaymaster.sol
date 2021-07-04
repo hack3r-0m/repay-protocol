@@ -43,12 +43,20 @@ contract WhitelistPaymaster is BasePaymaster {
     return "2.2.2+opengsn.whitelist.ipaymaster";
   }
 
-  function whitelistSender(address sender) public onlyOwner {
+  function isWhitelistedTarget(address _target) external view returns (bool) {
+    return targetWhitelist[_target];
+  }
+
+  function isWhitelistedSender(address _sender) external view returns (bool) {
+    return senderWhitelist[_sender];
+  }
+
+  function whitelistSender(address sender) external onlyOwner {
     senderWhitelist[sender] = true;
     useSenderWhitelist = true;
   }
 
-  function whitelistTarget(address target) public onlyOwner {
+  function whitelistTarget(address target) external onlyOwner {
     targetWhitelist[target] = true;
     useTargetWhitelist = true;
   }

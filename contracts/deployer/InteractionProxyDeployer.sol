@@ -4,6 +4,7 @@ pragma solidity 0.7.6;
 
 import "../interactor/UniswapInteractionProxy.sol";
 import "../utils/ERC2771Context.sol";
+import "../interfaces/IWhitelistPaymaster.sol";
 
 /* solhint-disable var-name-mixedcase */
 /* solhint-disable func-param-name-mixedcase */
@@ -11,7 +12,16 @@ import "../utils/ERC2771Context.sol";
 /* solhint-disable no-empty-blocks */
 
 contract InteractionProxyDeployer is ERC2771Context {
-  constructor() ERC2771Context(_trustedForwarder) {}
+
+  /**
+   * @notice EOA will deploy paymaster and then will change ownership of paymaster to ProxyDepolyer
+   */
+
+  address public paymaster;
+
+  constructor(address _trustedForwarder, address _paymaster) ERC2771Context(_trustedForwarder) {
+      paymaster = _paymaster;
+  }
 
   address public constant UNISWAP_ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
   address public constant SUSHISWAP_ROUTER = 0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F;
@@ -26,6 +36,8 @@ contract InteractionProxyDeployer is ERC2771Context {
   address public constant FORWARDER_RINKEBY = 0x83A54884bE4657706785D7309cf46B58FE5f6e8a;
   address public constant FORWARDER_POLYGON = 0xdA78a11FD57aF7be2eDD804840eA7f4c2A38801d;
 
+  IWhitelistPaymaster internal _Paymaster = IWhitelistPaymaster(paymaster);
+
   function versionRecipient() external pure returns (string memory) {
     return "2.2.2";
   }
@@ -35,8 +47,6 @@ contract InteractionProxyDeployer is ERC2771Context {
       id := chainid()
     }
   }
-
-  function initialize() external returns (address paymaster){}
 
   /**
    * If chainId is 1:
@@ -85,5 +95,12 @@ contract InteractionProxyDeployer is ERC2771Context {
     }
 
     proxy = address(new UniswapInteractionProxy(_forwarder, _router, _factory));
+
+    _Paymaster.whitelistSender(proxy);
+
+    if(!_Paymaster.isWhitelistedTarget(_router)){
+        _Paymaster.whitelistTarget(_router);
+    }
+
   }
 }
