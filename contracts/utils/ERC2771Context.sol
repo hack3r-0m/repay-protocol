@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.5||0.7.6||0.6.12||0.5.16;
+pragma solidity 0.7.6;
 
 import "./Context.sol";
 
@@ -11,7 +11,7 @@ import "./Context.sol";
 /* solhint-disable no-inline-assembly */
 
 abstract contract ERC2771Context is Context {
-    address immutable internal _trustedForwarder;
+    address internal _trustedForwarder;
 
     constructor(address trustedForwarder) {
         _trustedForwarder = trustedForwarder;

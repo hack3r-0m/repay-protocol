@@ -59,7 +59,7 @@ contract WhitelistPaymaster is BasePaymaster {
     bytes calldata approvalData,
     uint256 maxPossibleGas
   ) external view override returns (bytes memory context, bool revertOnRecipientRevert) {
-    (relayRequest, signature, approvalData, maxPossibleGas);
+    (relayRequest, signature, approvalData, maxPossibleGas); // to remove unused params warning from compiler
 
     if (useSenderWhitelist) {
       require(senderWhitelist[relayRequest.request.from], "PAYMASTER: SENDER_NOT_WHITELISTED");
@@ -71,7 +71,7 @@ contract WhitelistPaymaster is BasePaymaster {
   }
 
   function postRelayedCall(bytes calldata context, bool success, uint256 gasUseWithoutPost, GsnTypes.RelayData calldata relayData) external virtual override {
-    (context, success, gasUseWithoutPost, relayData);
+    (context, success, gasUseWithoutPost, relayData); // to remove unused params warning from compiler
 
     if(success){
       (address _for, address _to) = abi.decode(context, (address, address));
