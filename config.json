@@ -1,6 +1,27 @@
 {
-  "mumbai": {},
-  "kovan": {},
-  "polygon": {},
-  "mainnet": {}
+  "mainnet": {
+    "RelayHub": "0x9e59Ea5333cD4f402dAc320a04fafA023fe3810D",
+    "Forwarder": "0xAa3E82b4c4093b4bA13Cb5714382C99ADBf750cA",
+    "VersionRegistry": "0x97B6ebd38f2000B6E446DE24D9805606b882A1C5"
+  },
+  "rinkeby": {
+    "RelayHub": "0x6650d69225CA31049DB7Bd210aE4671c0B1ca132",
+    "Forwarder": "0x83A54884bE4657706785D7309cf46B58FE5f6e8a",
+    "VersionRegistry": "0xedD8C4103acAd42F7478021143E29e1B05aD85C6"
+  },
+  "kovan": {
+    "RelayHub": "0x727862794bdaa3b8Bc4E3705950D4e9397E3bAfd",
+    "Forwarder": "0x7eEae829DF28F9Ce522274D5771A6Be91d00E5ED",
+    "VersionRegistry": "0x7380D97dedf9B8EEe5bbE41422645aA19Cd4C8B3"
+  },
+  "polygon": {
+    "RelayHub": " 0x6C28AfC105e65782D9Ea6F2cA68df84C9e7d750d",
+    "Forwarder": "0xdA78a11FD57aF7be2eDD804840eA7f4c2A38801d",
+    "VersionRegistry": "0x4Fe8824c885D67613848c94a15dce7680897f33E"
+  },
+  "mumbai": {
+    "RelayHub": "0x6646cD15d33cE3a6933e36de38990121e8ba2806",
+    "Forwarder": "0x4d4581c01A457925410cd3877d17b2fd4553b2C5",
+    "VersionRegistry": "0x4Fe8824c885D67613848c94a15dce7680897f33E"
+  }
 }
