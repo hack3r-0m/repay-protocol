@@ -109,8 +109,23 @@ contract UniswapInteractionProxy is ERC2771Context {
         uint amountBMin,
         address to,
         uint deadline
-    ) external onlyOwnerOrProxy returns (uint amountA, uint amountB) {
-        return _router.removeLiquidity(tokenA, tokenB, liquidity, amountAMin, amountBMin, to, deadline);
+    ) external onlyOwnerOrProxy returns (uint amountA, uint amountB){
+
+        IERC20 _token = IERC20(_factory.getPair(tokenA, tokenB));
+        uint256 _allowance = _token.allowance(owner, address(this));
+
+        require(_allowance > 0, "LP_TOKEN_NOT_APPROVED_TO_PROXY");
+
+        _token.transferFrom(owner, address(this), _allowance) &&
+        _token.approve(UNISWAP_V2_ROUTER, _token.balanceOf(address(this)));
+
+        (amountA, amountB) = _router.removeLiquidity(tokenA, tokenB, liquidity, amountAMin, amountBMin, to, deadline);
+
+        IERC20 _tokenA = IERC20(tokenA);
+        IERC20 _tokenB = IERC20(tokenB);
+
+        _tokenA.transfer(owner, amountA);
+        _tokenB.transfer(owner, amountB);
     }
 
     function removeLiquidityETH(
@@ -121,7 +136,21 @@ contract UniswapInteractionProxy is ERC2771Context {
         address to,
         uint deadline
     ) external onlyOwnerOrProxy returns (uint amountToken, uint amountETH) {
-        return _router.removeLiquidityETH(token, liquidity, amountTokenMin, amountETHMin, to, deadline);
+
+        IERC20 _token = IERC20(_factory.getPair(token, _router.WETH()));
+        uint256 _allowance = _token.allowance(owner, address(this));
+
+        require(_allowance > 0, "LP_TOKEN_NOT_APPROVED_TO_PROXY");
+
+        _token.transferFrom(owner, address(this), _allowance) &&
+        _token.approve(UNISWAP_V2_ROUTER, _token.balanceOf(address(this)));
+
+        (amountToken, amountETH) = _router.removeLiquidityETH(token, liquidity, amountTokenMin, amountETHMin, to, deadline);
+
+        IERC20 _tokenA = IERC20(token);
+        
+        _tokenA.transfer(owner, amountToken);
+        owner.transfer(amountETH);
     }
 
     function swapTokensForExactTokens(
