@@ -3,6 +3,7 @@
 pragma solidity 0.8.5||0.7.6||0.6.12||0.5.16;
 pragma experimental ABIEncoderV2;
 
+import "../interfaces/IWhitelistPaymaster.sol";
 import "@opengsn/contracts/src/BasePaymaster.sol";
 
 /* solhint-disable no-unused-vars */
@@ -29,36 +30,29 @@ import "@opengsn/contracts/src/BasePaymaster.sol";
 
  */
 
-contract WhitelistPaymaster is BasePaymaster {
-
-  bool public useSenderWhitelist;
-  bool public useTargetWhitelist;
+contract WhitelistPaymaster is IWhitelistPaymaster, BasePaymaster {
 
   mapping(address => bool) public senderWhitelist;
   mapping(address => bool) public targetWhitelist;
-
-  event Accepted(address indexed onBehlafOf, address indexed to, uint256 gas);
 
   function versionPaymaster() external view override virtual returns (string memory) {
     return "2.2.2+opengsn.whitelist.ipaymaster";
   }
 
-  function isWhitelistedTarget(address _target) external view returns (bool) {
+  function isWhitelistedTarget(address _target) external view override returns (bool) {
     return targetWhitelist[_target];
   }
 
-  function isWhitelistedSender(address _sender) external view returns (bool) {
+  function isWhitelistedSender(address _sender) external view override returns (bool) {
     return senderWhitelist[_sender];
   }
 
-  function whitelistSender(address sender) external onlyOwner {
+  function whitelistSender(address sender) external override onlyOwner {
     senderWhitelist[sender] = true;
-    useSenderWhitelist = true;
   }
 
-  function whitelistTarget(address target) external onlyOwner {
+  function whitelistTarget(address target) external override onlyOwner {
     targetWhitelist[target] = true;
-    useTargetWhitelist = true;
   }
 
   function preRelayedCall(
@@ -69,12 +63,9 @@ contract WhitelistPaymaster is BasePaymaster {
   ) external view override returns (bytes memory context, bool revertOnRecipientRevert) {
     (relayRequest, signature, approvalData, maxPossibleGas); // to remove unused params warning from compiler
 
-    if (useSenderWhitelist) {
-      require(senderWhitelist[relayRequest.request.from], "PAYMASTER: SENDER_NOT_WHITELISTED");
-    }
-    if (useTargetWhitelist) {
-      require(targetWhitelist[relayRequest.request.to], "PAYMASTER: TARGET_NOT_WHITELISTED");
-    }
+    require(senderWhitelist[relayRequest.request.from], "PAYMASTER: SENDER_NOT_WHITELISTED");
+    require(targetWhitelist[relayRequest.request.to], "PAYMASTER: TARGET_NOT_WHITELISTED");
+
     return (abi.encode(relayRequest.request.from, relayRequest.request.to), false);
   }
 
