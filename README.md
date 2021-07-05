@@ -12,7 +12,7 @@ We are aiming to solve following problems:
 - Protection against frontrunning and sandwitch attacks.
 - Allowing paying fees in erc20 which you are swapping/borrowing/lending
 - Incentivize paying gas-usage bills on time.
-- Potential protocol to be used by other protocols for repuation measurement.
+- Potential protocol to be used by other protocols for reputation measurement.
 - Adding meta-transaction capabilites to non EIP2771 (GSN) compliant contracts.
 
 ## How we built it
