@@ -43,7 +43,7 @@ Polygon Deployments (Quickswap):
 
 ## TODO
 
-- extensive autmoated testing
+- extensive automated testing
 - fronted for current imeplemenation for current uniswap proxy
 - researching more about parsing msg.data to allow dynamic calls to any address
 - security tests and gas optimizations
