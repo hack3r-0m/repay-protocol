@@ -1,18 +1,22 @@
 {
-  "name": "repay-finance",
+  "name": "repay-protocol",
   "version": "1.0.0",
   "main": "hardhat.config.js",
   "author": "hack3r-0m <oparikh113@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "compile": "hardhat compile",
+    "prettier": "prettier --write .",
     "solhint": "solhint 'contracts/**/*.sol'",
-    "prettier": "prettier --write ."
+    "compile": "hardhat compile",
+    "deploy": "hardhat deploy",
+    "verify": "hardhat verify",
+    "whitelist-protocols": "hardhat whitelist-protocols",
+    "transfer-ownership": "hardhat transfer-ownership",
+    "create-uniswap-proxy": "hardhat create-uniswap-proxy"
   },
   "dependencies": {
     "@aave/protocol-v2": "^1.0.1",
     "@opengsn/contracts": "^2.2.2",
-    "@opengsn/paymasters": "^2.2.2-rc.1",
     "@uniswap/v2-core": "^1.0.1",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "@uniswap/v3-core": "^1.0.0",
@@ -20,7 +24,11 @@
     "ethers": "^5.4.0"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-etherscan": "^2.1.3",
+    "dotenv": "^10.0.0",
     "hardhat": "^2.4.1",
+    "hardhat-deploy": "^0.8.9",
     "prettier": "^2.3.2",
     "solhint": "^3.3.6"
   }
