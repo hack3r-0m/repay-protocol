@@ -15,7 +15,7 @@ We are aiming to solve following problems:
 - potential protocol to be used by other protocols for repuation measurement
 - adding meta-transaction capabilites to non EIP2771 (GSN) compliant contracts
 
-## How We did it
+## How we built it
 
 After not being convinced with our intial ideas and attempts during hackathon, we came across EIP725 and did extensive research and brainstorming, we came with idea to build solution for top DeFi protocols to make them GSN compatible via proxy as thier native implemenation does not support it.
 
