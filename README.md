@@ -21,7 +21,9 @@ After not being convinced with our intial ideas and attempts during hackathon, w
 
 We used JS, soldity, hardhat, hardhat-deploy, hardhat tasks, uniswap interface, GSN contracts, infura, subgraph and IPFS for building this awesome project.
 
-## Current Scenario
+## Proposed Solution
+
+<h4 align="center">Repay protcol</h4>
 
 ![current](https://user-images.githubusercontent.com/54898623/124495339-9f944900-ddd5-11eb-9b25-ba1e00e80654.png)
 
