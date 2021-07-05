@@ -40,9 +40,9 @@ Rinkeby Deployments (Uniswap):
 
 Polygon Deployments (Quickswap):
 
-- WhitelistPaymaster:
-- InteractionProxyDeployer:
-- UniswapInteractionProxy:
+- WhitelistPaymaster: https://polygonscan.com/address/0x62b1ed27e4d83d000138aac8cc9af1a6a058f760
+- InteractionProxyDeployer: https://polygonscan.com/address/0xBd722D00Ea739b0F762CFA6c9E423457FEf0B4C7
+- UniswapInteractionProxy: https://polygonscan.com/address/0x7cfb10284b928dc6ddd421d02b7a8034fdc4a8ff
 - Subgraph:
 
 ## TODO
