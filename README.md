@@ -1,6 +1,6 @@
-# Repay protcol
-
-An abstraction layer on top of existing DeFi protocols to add meta transaction capabilites
+<p align="center"><img src="/logo.gif" align="center" width="200"></p>
+<h1 align="center">Repay protcol</h1>
+<p align="center">An abstraction layer on top of existing DeFi protocols to add meta transaction capabilites</p>
 
 ## Motivation
 
@@ -8,16 +8,16 @@ UX is major challenge while on-boading new users to DeFi, Managing different acc
 
 We are aiming to solve following problems:
 
-- constant need to keep base currency to use as gas
-- protection against frontrunning and sandwitch attacks
-- allowing paying fees in erc20 which you are swapping/borrowing/lending
-- incentivize paying gas-usage bills on time
-- potential protocol to be used by other protocols for repuation measurement
-- adding meta-transaction capabilites to non EIP2771 (GSN) compliant contracts
+- Constant need to keep base currency to use as gas.
+- Protection against frontrunning and sandwitch attacks.
+- Allowing paying fees in erc20 which you are swapping/borrowing/lending
+- Incentivize paying gas-usage bills on time.
+- Potential protocol to be used by other protocols for repuation measurement.
+- Adding meta-transaction capabilites to non EIP2771 (GSN) compliant contracts.
 
 ## How we built it
 
-After not being convinced with our intial ideas and attempts during hackathon, we came across EIP725 and did extensive research and brainstorming, we came with idea to build solution for top DeFi protocols to make them GSN compatible via proxy as thier native implemenation does not support it.
+After not being convinced with our intial ideas and attempts during hackathon, we came across **EIP725** and did extensive research and brainstorming, we came with idea to build solution for top DeFi protocols to make them GSN compatible via proxy as thier native implemenation does not support it.
 
 We used JS, soldity, hardhat, hardhat-deploy, hardhat tasks, uniswap interface, GSN contracts, infura, subgraph and IPFS for building this awesome project.
 
@@ -64,7 +64,7 @@ End goal is to eliminate need for designing implementation for each protocol and
 
 ## Special Credits
 
-- openGSN team (help on discord during hackathon)
+- OpenGSN team (help on discord during hackathon)
 - GSN's public relayer's on polygon and rinkeby
-- uniswap team (help on discord during hackathon)
+- Uniswap team (help on discord during hackathon)
 - EIP725 and EIP2771 proposers and authors
