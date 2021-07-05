@@ -20,30 +20,30 @@ contract UniswapInteractionProxy is ERC2771Context {
     address payable public owner;
     address public proxy;
 
-    constructor(address _trustedForwarder, address UNISWAP_V2_ROUTER_, address UNISWAP_V2_FACTORY_)
+    IUniswapV2Router01 internal _router;
+    IUniswapV2Factory internal _factory;
+
+    constructor(address _trustedForwarder,
+                address _owner, address _proxy,
+                address router_, address factory_) 
     ERC2771Context(_trustedForwarder) {
+        owner = payable(_owner);
+        proxy = _proxy;
 
-        owner = payable(_msgSender());
-        proxy = msg.sender;
+        UNISWAP_V2_ROUTER = router_;
+        UNISWAP_V2_FACTORY = factory_;
 
-        UNISWAP_V2_ROUTER = UNISWAP_V2_ROUTER_;
-        UNISWAP_V2_FACTORY = UNISWAP_V2_FACTORY_;
+        _router = IUniswapV2Router01(UNISWAP_V2_ROUTER);
+        _factory = IUniswapV2Factory(UNISWAP_V2_FACTORY);
     }
     
-    IUniswapV2Router01 internal _router = IUniswapV2Router01(UNISWAP_V2_ROUTER);
-    IUniswapV2Factory internal _factory = IUniswapV2Factory(UNISWAP_V2_FACTORY);
+    modifier onlyOwner {
+        require(_msgSender() == owner, "ONLY_OWNER");
+        _;
+    }
 
     function versionRecipient() external pure returns (string memory) {
         return "2.2.2";
-    }
-
-    /**
-     * @notice making functions callable via owner or proxy incase proxy does not use GSN
-     */
-    
-    modifier onlyOwnerOrProxy {
-        require(_msgSender() == owner || _msgSender() == proxy, "ONLY_OWNER");
-        _;
     }
 
     function addLiquidity(
@@ -55,7 +55,7 @@ contract UniswapInteractionProxy is ERC2771Context {
         uint amountBMin,
         address to,
         uint deadline
-    ) external onlyOwnerOrProxy {
+    ) external onlyOwner {
 
         IERC20 _tokenA = IERC20(tokenA);
         IERC20 _tokenB = IERC20(tokenB);
@@ -109,7 +109,7 @@ contract UniswapInteractionProxy is ERC2771Context {
         uint amountBMin,
         address to,
         uint deadline
-    ) external onlyOwnerOrProxy returns (uint amountA, uint amountB){
+    ) external onlyOwner returns (uint amountA, uint amountB){
 
         IERC20 _token = IERC20(_factory.getPair(tokenA, tokenB));
         uint256 _allowance = _token.allowance(owner, address(this));
@@ -135,7 +135,7 @@ contract UniswapInteractionProxy is ERC2771Context {
         uint amountETHMin,
         address to,
         uint deadline
-    ) external onlyOwnerOrProxy returns (uint amountToken, uint amountETH) {
+    ) external onlyOwner returns (uint amountToken, uint amountETH) {
 
         IERC20 _token = IERC20(_factory.getPair(token, _router.WETH()));
         uint256 _allowance = _token.allowance(owner, address(this));
@@ -159,7 +159,7 @@ contract UniswapInteractionProxy is ERC2771Context {
         address[] calldata path,
         address to,
         uint deadline
-    ) external onlyOwnerOrProxy returns (uint[] memory) {
+    ) external onlyOwner returns (uint[] memory) {
 
         /* The first element of path is the input token, 
          * the last is the output token
@@ -186,7 +186,7 @@ contract UniswapInteractionProxy is ERC2771Context {
 
     function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline)
         external
-        payable onlyOwnerOrProxy
+        payable onlyOwner
         returns (uint[] memory) {
 
         address outputToken = path[path.length -1];
@@ -200,7 +200,7 @@ contract UniswapInteractionProxy is ERC2771Context {
     }
 
     function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
-        external onlyOwnerOrProxy
+        external onlyOwner
         returns (uint[] memory) {
 
         address inputToken = path[0];
@@ -221,7 +221,7 @@ contract UniswapInteractionProxy is ERC2771Context {
     }
 
     function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline)
-        external onlyOwnerOrProxy
+        external onlyOwner
         returns (uint[] memory) {
 
         address inputToken = path[0];
@@ -243,7 +243,7 @@ contract UniswapInteractionProxy is ERC2771Context {
 
     function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline)
         external
-        payable onlyOwnerOrProxy
+        payable onlyOwner
         returns (uint[] memory) {
 
         address outputToken = path[path.length -1];

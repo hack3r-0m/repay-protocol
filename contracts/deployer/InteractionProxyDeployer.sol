@@ -9,12 +9,14 @@ import "../interfaces/IWhitelistPaymaster.sol";
 /* solhint-disable var-name-mixedcase */
 /* solhint-disable func-param-name-mixedcase */
 /* solhint-disable no-inline-assembly */
-/* solhint-disable no-empty-blocks */
+/* solhint-disable max-line-length */
 
 contract InteractionProxyDeployer is ERC2771Context {
 
   /**
-   * @notice EOA will deploy paymaster and then will change ownership of paymaster to ProxyDepolyer
+   * @notice 
+   * EOA will deploy paymaster and then will change ownership of paymaster to ProxyDepolyer
+   * So ProxyDepolyer(this contract) can whitelist senders
    */
 
   address public paymaster;
@@ -36,7 +38,9 @@ contract InteractionProxyDeployer is ERC2771Context {
   address public constant FORWARDER_RINKEBY = 0x83A54884bE4657706785D7309cf46B58FE5f6e8a;
   address public constant FORWARDER_POLYGON = 0xdA78a11FD57aF7be2eDD804840eA7f4c2A38801d;
 
-  IWhitelistPaymaster internal _Paymaster = IWhitelistPaymaster(paymaster);
+  event ProxyDeployed(address indexed deployer, address indexed proxy);
+
+  mapping (address => address) public proxyToOwner;
 
   function versionRecipient() external pure returns (string memory) {
     return "2.2.2";
@@ -46,6 +50,10 @@ contract InteractionProxyDeployer is ERC2771Context {
     assembly {
       id := chainid()
     }
+  }
+
+  function getProxyOwner(address _proxy) external view returns (address) {
+    return proxyToOwner[_proxy];
   }
 
   /**
@@ -60,7 +68,7 @@ contract InteractionProxyDeployer is ERC2771Context {
    *      deploy quickswap
    */
 
-  function deploy(bool choice) external returns (address proxy) {
+  function deploy(bool choice) external returns (address _proxyAddress) {
 
     uint256 chainId = _getChainID();
     
@@ -69,38 +77,29 @@ contract InteractionProxyDeployer is ERC2771Context {
     address _factory;
 
     if (chainId == 1) {
+
       if (choice) {
-        _router = UNISWAP_ROUTER;
-        _factory = UNISWAP_FACTORY;
-        _forwarder = FORWARDER_MAINNET;
-      } else {
-        _router = SUSHISWAP_ROUTER;
-        _factory = SUSHISWAP_FACTORY;
-        _forwarder = FORWARDER_MAINNET;
-      }
-    } else if (chainId == 4) {
-      _router = UNISWAP_ROUTER;
-      _factory = UNISWAP_FACTORY;
-      _forwarder = FORWARDER_RINKEBY;
-    } else if (chainId == 42) {
-      _router = UNISWAP_ROUTER;
-      _factory = UNISWAP_FACTORY;
-      _forwarder = FORWARDER_RINKEBY;
-    } else if (chainId == 137) {
-      _router = QUICKSWAP_ROUTER;
-      _factory = QUICKSWAP_FACTORY;
-      _forwarder = FORWARDER_POLYGON;
-    } else {
-      revert("NO_FEASIBLE_CHAIN_ID");
-    }
+        _router = UNISWAP_ROUTER;_factory = UNISWAP_FACTORY;_forwarder = FORWARDER_MAINNET; } 
+      else {
+        _router = SUSHISWAP_ROUTER;_factory = SUSHISWAP_FACTORY;_forwarder = FORWARDER_MAINNET; } }
 
-    proxy = address(new UniswapInteractionProxy(_forwarder, _router, _factory));
+    else if (chainId == 4) {
+      _router = UNISWAP_ROUTER;_factory = UNISWAP_FACTORY;_forwarder = FORWARDER_RINKEBY; }
+    else if (chainId == 42) {
+      _router = UNISWAP_ROUTER;_factory = UNISWAP_FACTORY;_forwarder = FORWARDER_RINKEBY; }
+    else if (chainId == 137) {
+      _router = QUICKSWAP_ROUTER;_factory = QUICKSWAP_FACTORY;_forwarder = FORWARDER_POLYGON; } 
+    else {
+      revert("NO_FEASIBLE_CHAIN_ID"); }
 
-    _Paymaster.whitelistSender(proxy);
+    UniswapInteractionProxy proxy = new UniswapInteractionProxy(_forwarder, _msgSender(), address(this), _router, _factory);
 
-    if(!_Paymaster.isWhitelistedTarget(_router)){
-        _Paymaster.whitelistTarget(_router);
-    }
+    _proxyAddress = address(proxy);
+    emit ProxyDeployed(_msgSender(), _proxyAddress);
 
+    proxyToOwner[_proxyAddress] = _msgSender();
+
+    IWhitelistPaymaster(paymaster).whitelistSender(_proxyAddress);
   }
+
 }
