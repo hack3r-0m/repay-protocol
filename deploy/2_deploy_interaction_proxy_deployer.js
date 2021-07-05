@@ -21,10 +21,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   /* verify the contract */
 
   await hre.run('verify:verify', {
-      address: deploy_output.address,
-      constructorArguments: [trustedForwarder, paymaster],
-  })
-
+    address: deploy_output.address,
+    constructorArguments: [trustedForwarder, paymaster],
+  });
 };
 
 module.exports.tags = ['InteractionProxyDeployer'];

@@ -19,7 +19,7 @@ task(
   try {
     const out = await _paymaster.transferOwnership(interaction_proxy_deployer);
     console.log(out);
-    console.log("UNISWAP PROXY CREATED SUCCESSFULLY")
+    console.log('UNISWAP PROXY CREATED SUCCESSFULLY');
   } catch (e) {
     console.log('try manual verification, verify faield : ' + e.message);
   }

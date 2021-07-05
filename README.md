@@ -36,14 +36,14 @@ Rinkeby Deployments (Uniswap):
 - WhitelistPaymaster: https://rinkeby.etherscan.io/address/0x7c5077876533ae371608dA9B86cfb794302DBEA0
 - InteractionProxyDeployer: https://rinkeby.etherscan.io/address/0x32C624D907A8F4446a1A6d40F97219D0F13FE044
 - UniswapInteractionProxy: https://rinkeby.etherscan.io/address/0xa98c30869baab8454085aa445b0233353c58fb3b
-- Subgraph: 
+- Subgraph:
 
 Polygon Deployments (Quickswap):
 
 - WhitelistPaymaster:
 - InteractionProxyDeployer:
 - UniswapInteractionProxy:
-- Subgraph: 
+- Subgraph:
 
 ## TODO
 

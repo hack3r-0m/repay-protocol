@@ -25,15 +25,15 @@ task(
     console.log(deploy_output);
 
     await hre.run('verify:verify', {
-        address: deploy_output._proxyAddress,
-        constructorArguments: [
-          config[hre.network.name]['Forwarder'], // forwarder
-          process.env.ADDRESS, // proxy owner
-          interaction_proxy_deployer, // proxy address
-          config[hre.network.name]['Router'], // uniswap router
-          config[hre.network.name]['Factory'], // uniswap factory
-        ],
-    })
+      address: deploy_output._proxyAddress,
+      constructorArguments: [
+        config[hre.network.name]['Forwarder'], // forwarder
+        process.env.ADDRESS, // proxy owner
+        interaction_proxy_deployer, // proxy address
+        config[hre.network.name]['Router'], // uniswap router
+        config[hre.network.name]['Factory'], // uniswap factory
+      ],
+    });
   } catch (e) {
     console.log('Creating uniswap intraction proxy failed : ' + e.message);
   }
